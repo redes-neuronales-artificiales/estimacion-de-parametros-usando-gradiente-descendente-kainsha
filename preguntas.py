@@ -40,7 +40,7 @@ def pregunta_02():
 
     # Fije la tasa de aprendizaje en 0.0001 y el número de iteraciones en 1000
     learning_rate = 0.0001
-    n_iterations = 10000
+    n_iterations = 1000
 
     # Defina el parámetro inicial `params` como un arreglo de tamaño 3 con ceros
     params = np.zeros(x_poly.shape[1])
@@ -48,18 +48,12 @@ def pregunta_02():
 
         # Compute el pronóstico con los parámetros actuales
         y_pred = np.sum(np.multiply(x_poly, params), axis = 1)
-        
-        n = len(y)
 
         # Calcule el error (MSE)
-        error = np.sum((y-y_pred)**2) / n
+        error = y_pred - y
 
         # Calcule el gradiente
-        a_derivative = -(2/n) * sum(x_poly[:, 2] * (y - y_pred))
-        b_derivative = -(2/n) * sum(x_poly[:, 1] * (y - y_pred))
-        c_derivative = -(2/n) * sum(x_poly[:, 0] * (y - y_pred))
-        
-        gradient = np.array([c_derivative, b_derivative, a_derivative])
+        gradient = np.dot(x_poly.T, error)
         
         # Actualice los parámetros
         params = params - learning_rate * gradient
